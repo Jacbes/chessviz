@@ -1,4 +1,5 @@
 #include "board_print_plain.h"
+#include "board.h"
 #include <stdio.h>
 
 int x1, x2, y1, y2;
