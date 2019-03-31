@@ -2,5 +2,6 @@
 #define BOARD_PRINT_PLAIN_H
 
 void printdesk();
+void scanan();
 
 #endif

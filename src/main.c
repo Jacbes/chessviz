@@ -1,7 +1,7 @@
-#include <stdio.h>
 #include "board_print_plain.h"
+#include <stdio.h>
 
-char numbers[8] = {8, 7, 6, 5, 4, 3, 2, 1};
+int x1, x2, y1, y2;
 char desk[8][8] = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
                    {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -14,5 +14,8 @@ char desk[8][8] = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
 int main()
 {
     printdesk();
+
+    scanan();
+        
     return 0;
 }
