@@ -2,6 +2,8 @@
 #define BOARD_H
 
 void scanan();
-int chartoint(char input[5]);
+int chartoint(char input[6]);
+int white();
+void move();
 
 #endif
