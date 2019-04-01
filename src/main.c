@@ -1,18 +1,19 @@
-#include <stdio.h>
+#include "board.h"
 #include "board_print_plain.h"
-
-char numbers[8] = {8, 7, 6, 5, 4, 3, 2, 1};
-char desk[8][8] = {{'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'},
-                   {'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'},
-                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                   {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
-                   {'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'},
-                   {'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R'}};
+#include <stdio.h>
 
 int main()
 {
     printdesk();
+    while (1) {
+        printf("Белые (Большие буквы):");
+        scanan(1);
+        move();
+        printdesk();
+        printf("Черные (Маленькие буквы):");
+        scanan(2);
+        move();
+        printdesk();
+    }
     return 0;
 }
