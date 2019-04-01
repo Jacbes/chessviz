@@ -63,8 +63,8 @@ int white()
             && ((X2 - X1 == 1) || (X2 - X1 == -1)) && (Y2 - Y1 == 1)) {
             return 1; //рубим чужих
         }
-        return 0;
     }
+    return 0;
 }
 int black()
 {
