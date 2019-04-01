@@ -3,22 +3,33 @@
 #include <string.h>
 
 extern char desk[8][8];
-char input[7];
 int X1, X2, Y1, Y2;
 
-void scanan()
+void scanan(int flag)
 {
-    printf("Введите координаты: ");
-    fgets(input, 7, stdin);
-    if (chartoint(input)) {
-        printf("Правильно ввел\n");
-        if (white()) {
-            move();
-        } else {
-            printf("Не правильно походил\n");
+    char input[7] = "NULL";
+    while (1) {
+        while (1) {
+            fgets(input, 7, stdin);
+            if (chartoint(input)) {
+                break;
+            }
+            printf("Введите заново:");
         }
-    } else {
-        printf("Не правильно\n");
+        if (flag == 1) {
+            if (white() == 1) {
+                break;
+            } else {
+                printf("Введите заново:");
+            }
+        }
+        if (flag == 2) {
+            if (black() == 1) {
+                break;
+            } else {
+                printf("Введите заново:");
+            }
+        }
     }
 }
 
@@ -37,18 +48,38 @@ int chartoint(char input[7])
 int white()
 {
     if (desk[Y1][X1] > 64 && desk[Y1][X1] < 73) {
-        return 0;
+        return 0; //не рубим своих
     }
     switch (desk[Y1][X1]) {
     case 'P':
         if ((desk[Y2][X2] == ' ') && (Y1 == 1) && (X1 == X2) && (Y2 - Y1 > 0)
             && (Y2 - Y1 < 3)) {
+            return 1; //начальный ход
+        }
+        if ((desk[Y2][X2] == ' ') && (X2 == X1) && (Y2 - Y1 == 1)) {
+            return 1; //ход по пустым клеткам
+        }
+        if ((desk[Y2][X2] > 'a' && desk[Y2][X2] < 's')
+            && ((X2 - X1 == 1) || (X2 - X1 == -1)) && (Y2 - Y1 == 1)) {
+            return 1; //рубим чужих
+        }
+        return 0;
+    }
+}
+int black()
+{
+    if (desk[Y1][X1] > 96 && desk[Y1][X1] < 105) {
+        return 0;
+    }
+    switch (desk[Y1][X1]) {
+    case 'p':
+        if ((desk[Y2][X2] == ' ') && (Y1 == 6) && (X1 == X2) && (Y1 - Y2 > 0)
+            && (Y1 - Y2 < 3)) {
             return 1;
         }
     }
     return 0;
 }
-
 void move()
 {
     desk[Y2][X2] = desk[Y1][X1];
