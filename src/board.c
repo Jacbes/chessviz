@@ -9,26 +9,26 @@ void scanan(int flag)
 {
     char input[7] = "NULL";
     while (1) {
-        while (1) {
-            fgets(input, 7, stdin);
-            if (chartoint(input)) {
-                break;
-            }
-            printf("Введите заново:");
+  while (1) {
+      fgets(input, 7, stdin);
+     if (chartoint(input)) {
+       break;
         }
-        if (flag == 1) {
+        printf("Введите заново:");
+        }
+  if (flag == 1) {
             if (white() == 1) {
                 break;
             } else {
-                printf("Введите заново:");
+       printf("Введите заново:");
             }
         }
         if (flag == 2) {
             if (black() == 1) {
-                break;
-            } else {
+               break;
+       } else {
                 printf("Введите заново:");
-            }
+      }
         }
     }
 }
