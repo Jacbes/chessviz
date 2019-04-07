@@ -73,28 +73,28 @@ int white()
         }
         break;
     case 'N':
-        if ((Y1-Y2 == 2) && (X1-X2 == 1)) {
+        if ((Y1 - Y2 == 2) && (X1 - X2 == 1)) {
             return 1;
         }
-        if ((Y2-Y1 == 2) && (X2-X1 == 1)) {
+        if ((Y2 - Y1 == 2) && (X2 - X1 == 1)) {
             return 1;
         }
-        if ((Y2-Y1 == 2) && (X1-X2 == 1)) {
+        if ((Y2 - Y1 == 2) && (X1 - X2 == 1)) {
             return 1;
         }
-        if ((Y1-Y2 == 2) && (X2-X1 == 1)) {
+        if ((Y1 - Y2 == 2) && (X2 - X1 == 1)) {
             return 1;
         }
-        if ((Y1-Y2 == 1) && (X2-X1 == 2)) {
+        if ((Y1 - Y2 == 1) && (X2 - X1 == 2)) {
             return 1;
         }
-        if ((Y2-Y1 == 1) && (X2-X1 == 2)) {
+        if ((Y2 - Y1 == 1) && (X2 - X1 == 2)) {
             return 1;
         }
-        if ((Y1-Y2 == 1) && (X1-X2 == 2)) {
+        if ((Y1 - Y2 == 1) && (X1 - X2 == 2)) {
             return 1;
         }
-        if ((Y2-Y1 == 1) && (X1-X2 == 2)) {
+        if ((Y2 - Y1 == 1) && (X1 - X2 == 2)) {
             return 1;
         }
         break;
@@ -109,7 +109,8 @@ int white()
         }
         break;
     case 'Q':
-        if ((Y1 - Y2 != 1) && (Y2 - Y1 != 1) && ((X1 - X2 != 1) && (X2 - X1 != 1))) {
+        if ((Y1 - Y2 != 1) && (Y2 - Y1 != 1)
+            && ((X1 - X2 != 1) && (X2 - X1 != 1))) {
             break;
         } else {
             return 1;
@@ -117,7 +118,7 @@ int white()
     }
     return 0;
 }
-int black() 
+int black()
 {
     if ((desk[Y2][X2] > 'a') && (desk[Y2][X2] < 's')) {
         return 0; //не рубим своих
@@ -145,28 +146,28 @@ int black()
         }
         break;
     case 'n':
-        if ((Y1-Y2 == 2) && (X1-X2 == 1)) {
+        if ((Y1 - Y2 == 2) && (X1 - X2 == 1)) {
             return 1;
         }
-        if ((Y2-Y1 == 2) && (X2-X1 == 1)) {
+        if ((Y2 - Y1 == 2) && (X2 - X1 == 1)) {
             return 1;
         }
-        if ((Y2-Y1 == 2) && (X1-X2 == 1)) {
+        if ((Y2 - Y1 == 2) && (X1 - X2 == 1)) {
             return 1;
         }
-        if ((Y1-Y2 == 2) && (X2-X1 == 1)) {
+        if ((Y1 - Y2 == 2) && (X2 - X1 == 1)) {
             return 1;
         }
-        if ((Y1-Y2 == 1) && (X2-X1 == 2)) {
+        if ((Y1 - Y2 == 1) && (X2 - X1 == 2)) {
             return 1;
         }
-        if ((Y2-Y1 == 1) && (X2-X1 == 2)) {
+        if ((Y2 - Y1 == 1) && (X2 - X1 == 2)) {
             return 1;
         }
-        if ((Y1-Y2 == 1) && (X1-X2 == 2)) {
+        if ((Y1 - Y2 == 1) && (X1 - X2 == 2)) {
             return 1;
         }
-        if ((Y2-Y1 == 1) && (X1-X2 == 2)) {
+        if ((Y2 - Y1 == 1) && (X1 - X2 == 2)) {
             return 1;
         }
         break;
@@ -181,7 +182,8 @@ int black()
         }
         break;
     case 'q':
-        if ((Y1 - Y2 != 1) && (Y2 - Y1 != 1) && ((X1 - X2 != 1) && (X2 - X1 != 1))) {
+        if ((Y1 - Y2 != 1) && (Y2 - Y1 != 1)
+            && ((X1 - X2 != 1) && (X2 - X1 != 1))) {
             break;
         } else {
             return 1;
@@ -195,7 +197,8 @@ void move()
     desk[Y1][X1] = ' ';
 }
 
-int checkY() {
+int checkY()
+{
     int i, c1 = Y1, c2 = Y2;
     if (X1 != X2) {
         return 0;
@@ -205,15 +208,17 @@ int checkY() {
         c2 = Y1;
     }
     for (i = c1 + 1; i < c2; i++) {
-        if ((desk[i][X1] > 'a' && desk[i][X1] < 's') || (desk[i][X1] > 'A' && desk[i][X1] < 'S')) {
+        if ((desk[i][X1] > 'a' && desk[i][X1] < 's')
+            || (desk[i][X1] > 'A' && desk[i][X1] < 'S')) {
             return 0;
         }
     }
     return 1;
 }
 
-int checkX() {
-    int i,  c1 = X1, c2 = X2;
+int checkX()
+{
+    int i, c1 = X1, c2 = X2;
     if (Y1 != Y2) {
         return 0;
     }
@@ -222,14 +227,16 @@ int checkX() {
         c2 = X1;
     }
     for (i = c1 + 1; i < c2; i++) {
-        if ((desk[Y1][i] > 'a' && desk[Y1][i] < 's') || (desk[Y1][i] > 'A' && desk[Y1][i] < 'S')) {
+        if ((desk[Y1][i] > 'a' && desk[Y1][i] < 's')
+            || (desk[Y1][i] > 'A' && desk[Y1][i] < 'S')) {
             return 0;
         }
     }
     return 1;
 }
 
-int checkD() {
+int checkD()
+{
     int i, j, c1 = Y2, c2 = Y1, ci, cj;
     if (((Y2 - Y1) != (X2 - X1)) && ((Y2 - Y1) != (X1 - X2))) {
         return 0;
@@ -249,7 +256,8 @@ int checkD() {
     i = Y1 + ci;
     j = X1 + cj;
     while ((i < c2) && (i > c1)) {
-        if (((desk[i][j] > 'a') && (desk[i][j] < 's')) ||((desk[i][j] > 'A') && (desk[i][j] < 'S'))) {
+        if (((desk[i][j] > 'a') && (desk[i][j] < 's'))
+            || ((desk[i][j] > 'A') && (desk[i][j] < 'S'))) {
             return 0;
         }
         i += ci;
