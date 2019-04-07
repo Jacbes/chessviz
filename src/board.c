@@ -115,6 +115,7 @@ int white()
         } else {
             return 1;
         }
+        break;
     }
     return 0;
 }
