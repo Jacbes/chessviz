@@ -6,5 +6,7 @@ int chartoint(char input[6]);
 int white();
 int black();
 void move();
+int checkY();
+int checkX ();
 
 #endif
