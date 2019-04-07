@@ -8,5 +8,6 @@ int black();
 void move();
 int checkY();
 int checkX ();
+int checkD();
 
 #endif
