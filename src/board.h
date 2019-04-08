@@ -12,5 +12,6 @@ int checkY();
 int checkX();
 int checkD();
 void transformPawn();
+int checkWIn(int status);
 
 #endif
