@@ -1,7 +1,7 @@
-all: bin/chess
+all: bin/chessviz
 
-bin/chess: build/src/main.o build/src/board_print_plain.o build/src/board.o
-	gcc -Wall -Werror build/src/main.o build/src/board_print_plain.o build/src/board.o -o bin/chess
+bin/chessviz: build/src/main.o build/src/board_print_plain.o build/src/board.o
+	gcc -Wall -Werror build/src/main.o build/src/board_print_plain.o build/src/board.o -o bin/chessviz
 
 build/src/main.o: src/main.c
 	gcc -Wall -Werror -c src/main.c -o build/src/main.o
