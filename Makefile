@@ -17,10 +17,10 @@ bin/chessviz-test: build/test/main.o build/test/board_test.o build/src/board.o b
 	gcc -Wall -Werror build/test/main.o build/test/board_test.o build/src/board.o build/src/board_print_plain.o -o bin/chessviz-test
 
 build/test/main.o: test/main.c
-	gcc -I thirdparty src -Wall -Werror -c test/main.c -o build/test/main.o
+	gcc -I thirdparty -Wall -Werror -c test/main.c -o build/test/main.o
 
 build/test/board_test.o: test/board_test.c
-	gcc -I thirdparty src -Wall -Werror -c test/board_test.c -o build/test/board_test.o
+	gcc -I thirdparty -Wall -Werror -c test/board_test.c -o build/test/board_test.o
 
 
 .PHONY: clean
