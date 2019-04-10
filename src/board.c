@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <string.h>
 
-extern char desk[8][8];
-int X1, X2, Y1, Y2;
 extern char input[7];
+extern int X1, X2, Y1, Y2;
+extern char desk[8][8];
 
 void scanan(int flag)
 {
