@@ -33,7 +33,7 @@ CTEST(inputdata, chartointer)
     strcpy(input, "hello!"); // Ввод мусора
     int c5 = chartoint(input);
 
-    const int exp1 = 0;
+    const int exp1 = 1;
     const int exp2 = 0;
     const int exp3 = 1;
     const int exp4 = 0;
