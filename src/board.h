@@ -1,15 +1,15 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-void scanan();
-int chartoint(char input[6]);
-int white();
-int black();
-void move();
-int checkY();
-int checkX();
-int checkD();
-void transformPawn();
-int checkWIn(int status);
+void inputStringOfMove(int colorOfPlayer);
+int parseStringOfMoveToCoordinates(const char stringOfMove[]);
+int moveWhiteFigure(const char stringOfMove[]);
+int moveBlackFigure(const char stringOfMove[]);
+void updateDesk();
+int checkYCoordinateMove();
+int checkXCoordinateMove();
+int checkDiagonalMove();
+void transformPawnToNewFigure();
+int checkWin(int colorOfPlayer);
 
 #endif

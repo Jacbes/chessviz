@@ -1,10 +1,9 @@
 #include "../src/board.h"
-#include "../src/board_print_plain.h"
 #include "../thirdparty/ctest.h"
-#include <stdio.h>
+#include "../src/board_print_plain.h"
 #include <string.h>
 
-int status = 0, i, j;
+int i;
 int X1, X2, Y1, Y2;
 char desk[8][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
@@ -14,24 +13,24 @@ char desk[8][8] = {{' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
                    {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}};
-char input[7];
 
-CTEST(inputdata, chartointer)
-{
-    strcpy(input, "E2fE4"); // Ввод неправильного формата
-    int c1 = chartoint(input);
+CTEST(inputdata, chartointer) {
+    char stringOfMove[7];
 
-    strcpy(input, "E2xE4"); // Ход взятия
-    int c2 = chartoint(input);
+    strcpy(stringOfMove, "E2fE4"); // Ввод неправильного формата
+    int c1 = parseStringOfMoveToCoordinates(stringOfMove);
 
-    strcpy(input, "E2-E4"); // Обычный ход
-    int c3 = chartoint(input);
+    strcpy(stringOfMove, "E2xE4"); // Ход взятия
+    int c2 = parseStringOfMoveToCoordinates(stringOfMove);
 
-    strcpy(input, "E2-E9"); // Ход за пределы поля
-    int c4 = chartoint(input);
+    strcpy(stringOfMove, "E2-E4"); // Обычный ход
+    int c3 = parseStringOfMoveToCoordinates(stringOfMove);
 
-    strcpy(input, "hello!"); // Ввод мусора
-    int c5 = chartoint(input);
+    strcpy(stringOfMove, "E2-E9"); // Ход за пределы поля
+    int c4 = parseStringOfMoveToCoordinates(stringOfMove);
+
+    strcpy(stringOfMove, "hello!"); // Ввод мусора
+    int c5 = parseStringOfMoveToCoordinates(stringOfMove);
 
     const int exp1 = 0;
     const int exp2 = 0;
@@ -46,45 +45,46 @@ CTEST(inputdata, chartointer)
     ASSERT_EQUAL(exp5, c5);
 }
 
-CTEST(moving, movewhitepawn) // Тест белой пешки
-{
-    strcpy(input, "E2-E3"); // Первый ход на одну клетку
-    chartoint(input);
-    desk[Y1][X1] = 'P';
-    int c1 = white();
+CTEST(moving, movewhitepawn) { // Тест белой пешки
+    char stringOfMove[7];
 
-    strcpy(input, "E2-E4"); // Первый ход на две клетки
-    chartoint(input);
-    int c2 = white();
+    strcpy(stringOfMove, "E2-E3"); // Первый ход на одну клетку
+    parseStringOfMoveToCoordinates(stringOfMove);
+    desk[Y1][X1] = 'P';
+    int c1 = moveWhiteFigure(stringOfMove);
+
+    strcpy(stringOfMove, "E2-E4"); // Первый ход на две клетки
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c2 = moveWhiteFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
 
-    strcpy(input, "E3-E5"); // Не первый ход на две клетки
-    chartoint(input);
+    strcpy(stringOfMove, "E3-E5"); // Не первый ход на две клетки
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'P';
-    int c3 = white();
+    int c3 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "E3-F4"); // Ход по диагонали
-    chartoint(input);
-    int c4 = white();
+    strcpy(stringOfMove, "E3-F4"); // Ход по диагонали
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c4 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "E3-E2"); // Ход назад
-    chartoint(input);
-    int c5 = white();
+    strcpy(stringOfMove, "E3-E2"); // Ход назад
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c5 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "E3xF4"); // Взятие чужой фигуры
-    chartoint(input);
+    strcpy(stringOfMove, "E3xF4"); // Взятие чужой фигуры
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y2][X2] = 'p';
-    int c6 = white();
+    int c6 = moveWhiteFigure(stringOfMove);
 
     desk[Y2][X2] = ' ';
     desk[Y1][X1] = ' ';
 
-    strcpy(input, "E2-E4"); // Первый ход через фигуру
-    chartoint(input);
+    strcpy(stringOfMove, "E2-E4"); // Первый ход через фигуру
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'P';
     desk[Y1 + 1][X1] = 'p';
-    int c7 = white();
+    int c7 = moveWhiteFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
     desk[Y1 + 1][X1] = ' ';
@@ -106,45 +106,46 @@ CTEST(moving, movewhitepawn) // Тест белой пешки
     ASSERT_EQUAL(exp7, c7);
 }
 
-CTEST(moving, moveblackpawn) // Тест черной пешки
-{
-    strcpy(input, "D7-D6"); // Первый ход на одну клетку
-    chartoint(input);
-    desk[Y1][X1] = 'p';
-    int c1 = black();
+CTEST(moving, moveblackpawn) { // Тест черной пешки
+    char stringOfMove[7];
 
-    strcpy(input, "D7-D5"); // Первый ход на две клетки
-    chartoint(input);
-    int c2 = black();
+    strcpy(stringOfMove, "D7-D6"); // Первый ход на одну клетку
+    parseStringOfMoveToCoordinates(stringOfMove);
+    desk[Y1][X1] = 'p';
+    int c1 = moveBlackFigure(stringOfMove);
+
+    strcpy(stringOfMove, "D7-D5"); // Первый ход на две клетки
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c2 = moveBlackFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
 
-    strcpy(input, "D6-D4"); // Не первый ход на две клетки
-    chartoint(input);
+    strcpy(stringOfMove, "D6-D4"); // Не первый ход на две клетки
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'p';
-    int c3 = black();
+    int c3 = moveBlackFigure(stringOfMove);
 
-    strcpy(input, "D6-C5"); // Ход по диагонали
-    chartoint(input);
-    int c4 = black();
+    strcpy(stringOfMove, "D6-C5"); // Ход по диагонали
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c4 = moveBlackFigure(stringOfMove);
 
-    strcpy(input, "D6-D7"); // Ход назад
-    chartoint(input);
-    int c5 = black();
+    strcpy(stringOfMove, "D6-D7"); // Ход назад
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c5 = moveBlackFigure(stringOfMove);
 
-    strcpy(input, "D6xC5"); // Взятие чужой фигуры
-    chartoint(input);
+    strcpy(stringOfMove, "D6xC5"); // Взятие чужой фигуры
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y2][X2] = 'P';
-    int c6 = black();
+    int c6 = moveBlackFigure(stringOfMove);
 
     desk[Y2][X2] = ' ';
     desk[Y1][X1] = ' ';
 
-    strcpy(input, "D7-D5"); // Первый ход через фигуру
-    chartoint(input);
+    strcpy(stringOfMove, "D7-D5"); // Первый ход через фигуру
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'P';
     desk[Y1 + 1][X1] = 'P';
-    int c7 = black();
+    int c7 = moveBlackFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
     desk[Y1 + 1][X1] = ' ';
@@ -166,37 +167,38 @@ CTEST(moving, moveblackpawn) // Тест черной пешки
     ASSERT_EQUAL(exp7, c7);
 }
 
-CTEST(moving, moverook) // Тест ладьи
-{
-    strcpy(input, "D4-D7"); // Ход вперед
-    chartoint(input);
+CTEST(moving, moverook) { // Тест ладьи
+    char stringOfMove[7];
+
+    strcpy(stringOfMove, "D4-D7"); // Ход вперед
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'R';
-    int c1 = white();
+    int c1 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-D2"); // Ход назад
-    chartoint(input);
-    int c2 = white();
+    strcpy(stringOfMove, "D4-D2"); // Ход назад
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c2 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F4"); // Ход вправо
-    chartoint(input);
-    int c3 = white();
+    strcpy(stringOfMove, "D4-F4"); // Ход вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c3 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-B4"); // Ход влево
-    chartoint(input);
-    int c4 = white();
+    strcpy(stringOfMove, "D4-B4"); // Ход влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c4 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F6"); // Ход по диагонали
-    chartoint(input);
-    int c5 = white();
+    strcpy(stringOfMove, "D4-F6"); // Ход по диагонали
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c5 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4xD5"); // Взятие чужой фигуры
-    chartoint(input);
+    strcpy(stringOfMove, "D4xD5"); // Взятие чужой фигуры
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y2][X2] = 'r';
-    int c6 = white();
+    int c6 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-D6"); // Ход через фигуру
-    chartoint(input);
-    int c7 = white();
+    strcpy(stringOfMove, "D4-D6"); // Ход через фигуру
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c7 = moveWhiteFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
     desk[Y2 - 1][X2] = ' ';
@@ -218,66 +220,67 @@ CTEST(moving, moverook) // Тест ладьи
     ASSERT_EQUAL(exp7, c7);
 }
 
-CTEST(moving, moveknight) // Тест коня
-{
-    strcpy(input, "D4-D7"); // Ход вперед
-    chartoint(input);
+CTEST(moving, moveknight) { // Тест коня
+    char stringOfMove[7];
+
+    strcpy(stringOfMove, "D4-D7"); // Ход вперед
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'N';
-    int c1 = white();
+    int c1 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-D2"); // Ход назад
-    chartoint(input);
-    int c2 = white();
+    strcpy(stringOfMove, "D4-D2"); // Ход назад
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c2 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F4"); // Ход вправо
-    chartoint(input);
-    int c3 = white();
+    strcpy(stringOfMove, "D4-F4"); // Ход вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c3 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-B4"); // Ход влево
-    chartoint(input);
-    int c4 = white();
+    strcpy(stringOfMove, "D4-B4"); // Ход влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c4 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F6"); // Ход по диагонали
-    chartoint(input);
-    int c5 = white();
+    strcpy(stringOfMove, "D4-F6"); // Ход по диагонали
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c5 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-C6"); // Ход Г вверх влево
-    chartoint(input);
-    int c61 = white();
+    strcpy(stringOfMove, "D4-C6"); // Ход Г вверх влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c61 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-E6"); // Ход Г вверх вправо
-    chartoint(input);
-    int c62 = white();
+    strcpy(stringOfMove, "D4-E6"); // Ход Г вверх вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c62 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F5"); // Ход Г вправо вверх
-    chartoint(input);
-    int c63 = white();
+    strcpy(stringOfMove, "D4-F5"); // Ход Г вправо вверх
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c63 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F3"); // Ход Г вправо вниз
-    chartoint(input);
-    int c64 = white();
+    strcpy(stringOfMove, "D4-F3"); // Ход Г вправо вниз
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c64 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-E2"); // Ход Г вниз вправо
-    chartoint(input);
-    int c65 = white();
+    strcpy(stringOfMove, "D4-E2"); // Ход Г вниз вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c65 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-C2"); // Ход Г вниз влево
-    chartoint(input);
-    int c66 = white();
+    strcpy(stringOfMove, "D4-C2"); // Ход Г вниз влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c66 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-B5"); // Ход Г влево вверх
-    chartoint(input);
-    int c67 = white();
+    strcpy(stringOfMove, "D4-B5"); // Ход Г влево вверх
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c67 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-B3"); // Ход Г влево вниз
-    chartoint(input);
-    int c68 = white();
+    strcpy(stringOfMove, "D4-B3"); // Ход Г влево вниз
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c68 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4xE6"); // Ход через фигуру и взятие
-    chartoint(input);
+    strcpy(stringOfMove, "D4xE6"); // Ход через фигуру и взятие
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[X1 + 1][Y1] = 'p';
     desk[Y2][X2] = 'n';
-    int c7 = white();
+    int c7 = moveWhiteFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
     desk[X1 + 1][Y1] = ' ';
@@ -314,48 +317,49 @@ CTEST(moving, moveknight) // Тест коня
     ASSERT_EQUAL(exp7, c7);
 }
 
-CTEST(moving, movebishop) // Тест слона
-{
-    strcpy(input, "D4-D7"); // Ход вперед
-    chartoint(input);
+CTEST(moving, movebishop) { // Тест слона
+    char stringOfMove[7];
+
+    strcpy(stringOfMove, "D4-D7"); // Ход вперед
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'B';
-    int c1 = white();
+    int c1 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-D2"); // Ход назад
-    chartoint(input);
-    int c2 = white();
+    strcpy(stringOfMove, "D4-D2"); // Ход назад
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c2 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F4"); // Ход вправо
-    chartoint(input);
-    int c3 = white();
+    strcpy(stringOfMove, "D4-F4"); // Ход вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c3 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-B4"); // Ход влево
-    chartoint(input);
-    int c4 = white();
+    strcpy(stringOfMove, "D4-B4"); // Ход влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c4 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F6"); // Ход по диагонали вверх вправо
-    chartoint(input);
-    int c51 = white();
+    strcpy(stringOfMove, "D4-F6"); // Ход по диагонали вверх вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c51 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-B6"); // Ход по диагонали вверх влево
-    chartoint(input);
-    int c52 = white();
+    strcpy(stringOfMove, "D4-B6"); // Ход по диагонали вверх влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c52 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F2"); // Ход по диагонали вниз вправо
-    chartoint(input);
-    int c53 = white();
+    strcpy(stringOfMove, "D4-F2"); // Ход по диагонали вниз вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c53 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4xB2"); // Ход по диагонали вверх вправо и взятие
-    chartoint(input);
+    strcpy(stringOfMove, "D4xB2"); // Ход по диагонали вверх вправо и взятие
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y2][X2] = 'p';
-    int c54 = white();
+    int c54 = moveWhiteFigure(stringOfMove);
 
     desk[Y2][X2] = ' ';
 
-    strcpy(input, "D4-F6"); // Ход по диагонали вниз вправо через фигуру
-    chartoint(input);
+    strcpy(stringOfMove, "D4-F6"); // Ход по диагонали вниз вправо через фигуру
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y2 - 1][X2 - 1] = 'p';
-    int c6 = white();
+    int c6 = moveWhiteFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
     desk[Y2 - 1][X2 - 1] = ' ';
@@ -381,51 +385,52 @@ CTEST(moving, movebishop) // Тест слона
     ASSERT_EQUAL(exp6, c6);
 }
 
-CTEST(moving, moveking) // Тест короля
-{
-    strcpy(input, "D4-D5"); // Ход вверх
-    chartoint(input);
+CTEST(moving, moveking) { // Тест короля
+    char stringOfMove[7];
+
+    strcpy(stringOfMove, "D4-D5"); // Ход вверх
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'K';
-    int c1 = white();
+    int c1 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-D3"); // Ход вниз
-    chartoint(input);
-    int c2 = white();
+    strcpy(stringOfMove, "D4-D3"); // Ход вниз
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c2 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-C4"); // Ход влево
-    chartoint(input);
-    int c3 = white();
+    strcpy(stringOfMove, "D4-C4"); // Ход влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c3 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-E4"); // Ход вправо
-    chartoint(input);
-    int c4 = white();
+    strcpy(stringOfMove, "D4-E4"); // Ход вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c4 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-E5"); // Ход вверх вправо
-    chartoint(input);
-    int c5 = white();
+    strcpy(stringOfMove, "D4-E5"); // Ход вверх вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c5 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-C5"); // Ход вверх влево
-    chartoint(input);
-    int c6 = white();
+    strcpy(stringOfMove, "D4-C5"); // Ход вверх влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c6 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-E3"); // Ход вниз вправо
-    chartoint(input);
-    int c7 = white();
+    strcpy(stringOfMove, "D4-E3"); // Ход вниз вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c7 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4xC3"); // Ход вниз влево и взятие
-    chartoint(input);
+    strcpy(stringOfMove, "D4xC3"); // Ход вниз влево и взятие
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y2][X2] = 'p';
-    int c8 = white();
+    int c8 = moveWhiteFigure(stringOfMove);
 
     desk[Y2][X2] = ' ';
 
-    strcpy(input, "D4-D6"); // Ход вверх на 2 клетки
-    chartoint(input);
-    int c9 = white();
+    strcpy(stringOfMove, "D4-D6"); // Ход вверх на 2 клетки
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c9 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-F2"); // Ход вниз вправо на 2 клетки
-    chartoint(input);
-    int c10 = white();
+    strcpy(stringOfMove, "D4-F2"); // Ход вниз вправо на 2 клетки
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c10 = moveWhiteFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
 
@@ -452,54 +457,55 @@ CTEST(moving, moveking) // Тест короля
     ASSERT_EQUAL(exp10, c10);
 }
 
-CTEST(moving, movequeen) // Тест ферзя
-{
-    strcpy(input, "D4-D7"); // Ход вверх
-    chartoint(input);
+CTEST(moving, movequeen) { // Тест ферзя
+    char stringOfMove[7];
+
+    strcpy(stringOfMove, "D4-D7"); // Ход вверх
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y1][X1] = 'Q';
-    int c1 = white();
+    int c1 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-D1"); // Ход вниз
-    chartoint(input);
-    int c2 = white();
+    strcpy(stringOfMove, "D4-D1"); // Ход вниз
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c2 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-A4"); // Ход влево
-    chartoint(input);
-    int c3 = white();
+    strcpy(stringOfMove, "D4-A4"); // Ход влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c3 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-G4"); // Ход вправо
-    chartoint(input);
-    int c4 = white();
+    strcpy(stringOfMove, "D4-G4"); // Ход вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c4 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-G7"); // Ход по диагонали вверх вправо
-    chartoint(input);
-    int c5 = white();
+    strcpy(stringOfMove, "D4-G7"); // Ход по диагонали вверх вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c5 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-A7"); // Ход по диагонали вверх влево
-    chartoint(input);
-    int c6 = white();
+    strcpy(stringOfMove, "D4-A7"); // Ход по диагонали вверх влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c6 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4-A1"); // Ход по диагонали вних влево
-    chartoint(input);
-    int c7 = white();
+    strcpy(stringOfMove, "D4-A1"); // Ход по диагонали вних влево
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c7 = moveWhiteFigure(stringOfMove);
 
-    strcpy(input, "D4xG1"); // Ход по диагонали вниз вправо и взятие
-    chartoint(input);
+    strcpy(stringOfMove, "D4xG1"); // Ход по диагонали вниз вправо и взятие
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y2][X2] = 'p';
-    int c8 = white();
+    int c8 = moveWhiteFigure(stringOfMove);
 
     desk[Y2][X2] = ' ';
 
-    strcpy(input, "D4-G7"); // Ход по диагонали вверх вправо через фигуру
-    chartoint(input);
+    strcpy(stringOfMove, "D4-G7"); // Ход по диагонали вверх вправо через фигуру
+    parseStringOfMoveToCoordinates(stringOfMove);
     desk[Y2 - 1][X2 - 1] = 'p';
-    int c9 = white();
+    int c9 = moveWhiteFigure(stringOfMove);
 
     desk[Y2 - 1][X2 - 1] = ' ';
 
-    strcpy(input, "D4-F7"); // Ход Г по диагонали вверх вправо
-    chartoint(input);
-    int c10 = white();
+    strcpy(stringOfMove, "D4-F7"); // Ход Г по диагонали вверх вправо
+    parseStringOfMoveToCoordinates(stringOfMove);
+    int c10 = moveWhiteFigure(stringOfMove);
 
     desk[Y1][X1] = ' ';
 
